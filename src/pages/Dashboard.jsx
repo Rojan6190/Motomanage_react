@@ -53,6 +53,7 @@ export default function Dashboard() {
     }).length
 
   return (
+    
     <div className="page" style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
       {/* Header */}
       <div style={{

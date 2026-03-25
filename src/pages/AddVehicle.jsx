@@ -1,6 +1,6 @@
 // pages/AddVehicle.jsx
 import { useState, useEffect } from 'react'
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom'
 import api from '../api'
 import { Field, Input, Select, Section } from '../components/FormElements'
 
@@ -12,6 +12,11 @@ const INITIAL_VEHICLE = {
 export default function AddVehicle() {
   const navigate = useNavigate()
   const { userId } = useParams()
+  const [searchParams] = useSearchParams()  //added 
+ 
+  // owner comes from route param (/users/:userId/vehicles/add)
+  // OR from query string (/vehicles/add?owner=123) via sidebar
+  const ownerId = userId || searchParams.get('owner')
 
   const [vehicle, setVehicle]   = useState(INITIAL_VEHICLE)
   const [user, setUser]         = useState(null)
@@ -21,12 +26,14 @@ export default function AddVehicle() {
   const [apiError, setApiError] = useState('')
 
   // Fetch user so we can show their name in the header
-  useEffect(() => {
-    api.get(`/users/${userId}`)
+  //userId changed to ownerId for fetching
+   useEffect(() => {
+    if (!ownerId) return
+    api.get(`/users/${ownerId}`)
       .then(r => setUser(r.data))
       .catch(console.error)
-  }, [userId])
-
+  }, [ownerId])
+   
   const handleVehicle = e => setVehicle(p => ({ ...p, [e.target.name]: e.target.value }))
 
   const validate = () => {
@@ -55,7 +62,7 @@ export default function AddVehicle() {
         owner: Number(userId),
       })
       // Go back to this user's vehicle list
-      navigate(`/users/${userId}/vehicles`)
+      navigate(`/users/${ownerId}/vehicles`)
     } catch (err) {
       const data = err.response?.data
       if (data && typeof data === 'object') {
@@ -77,15 +84,14 @@ export default function AddVehicle() {
 
   const displayName = user
     ? ([user.first_name, user.last_name].filter(Boolean).join(' ') || user.username)
-    : `User #${userId}`
-
+    : ownerId ? `User #${ownerId}` : 'Unknown User'
   return (
     <div style={{ padding: '24px', maxWidth: 860, margin: '0 auto' }}>
 
       {/* Header */}
       <div style={{ marginBottom: 32 }}>
         <Link
-          to={`/users/${userId}/vehicles`}
+          to={`/users/${ownerId}/vehicles`}
           style={{ color: '#f0a500', textDecoration: 'none', fontSize: '0.85rem' }}
         >
           ← Back to {displayName}'s Vehicles
@@ -147,7 +153,7 @@ export default function AddVehicle() {
 
         {/* Actions */}
         <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', paddingBottom: 40 }}>
-          <Link to={`/users/${userId}/vehicles`}>
+          <Link to={`/users/${ownerId}/vehicles`}>
             <button style={{
               background: 'transparent', border: '1px solid #2a2d3a',
               color: '#6b7080', padding: '11px 24px',
