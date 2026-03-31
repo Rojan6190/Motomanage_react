@@ -1,4 +1,6 @@
-import { Link, useLocation } from 'react-router-dom'
+// src/components/Navbar.jsx
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import SidebarMenu from './SidebarMenu'
 
 const links = [
@@ -7,7 +9,14 @@ const links = [
 ]
 
 export default function Navbar() {
-  const { pathname } = useLocation()
+  const { pathname }   = useLocation()
+  const { auth, logout } = useAuth()
+  const navigate       = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
 
   return (
     <nav style={{
@@ -22,7 +31,6 @@ export default function Navbar() {
       top: 0,
       zIndex: 100,
     }}>
-      {/* Hamburger — opens the sidebar drawer */}
       <SidebarMenu />
 
       {/* Logo */}
@@ -35,7 +43,7 @@ export default function Navbar() {
         }}>MotoManage</span>
       </Link>
 
-      {/* Top nav links */}
+      {/* Nav links */}
       <div style={{ display: 'flex', gap: '4px', flex: 1 }}>
         {links.map(({ to, label }) => {
           const active = pathname === to || (to !== '/' && pathname.startsWith(to))
@@ -53,6 +61,31 @@ export default function Navbar() {
         })}
       </div>
 
+      {/* Right side — username + logout */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginLeft: 'auto' }}>
+        {auth?.user && (
+          <span style={{
+            fontSize: '0.82rem', color: '#6b7080',
+            fontFamily: "'Barlow Condensed', sans-serif",
+            letterSpacing: '0.05em',
+          }}>
+            {auth.user.username}
+          </span>
+        )}
+        <button
+          onClick={handleLogout}
+          style={{
+            background: 'transparent', border: '1px solid #2a2d3a',
+            borderRadius: 6, padding: '5px 12px',
+            color: '#6b7080', fontSize: '0.82rem',
+            cursor: 'pointer', transition: 'color 0.15s, border-color 0.15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#e05252'; e.currentTarget.style.borderColor = '#e05252' }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#6b7080'; e.currentTarget.style.borderColor = '#2a2d3a' }}
+        >
+          Logout
+        </button>
+      </div>
     </nav>
   )
 }
