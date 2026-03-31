@@ -443,7 +443,7 @@ export default function UserVehicles() {
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 ) : (
-                  <div style={{ color: '#3a3d4a', fontSize: 13, textAlign: 'center' }}>
+                  <div style={{ color: '#d8dae4', fontSize: 13, textAlign: 'center' }}>
                     <div style={{ fontSize: 28, marginBottom: 6 }}>🚘</div>
                     No image uploaded
                   </div>

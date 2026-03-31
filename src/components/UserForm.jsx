@@ -1,25 +1,25 @@
-//components/UserForm.jsx
-//this form is used by AddUser.jsx and EditUser.jsx
+// components/UserForm.jsx
+// this form is used by AddUser.jsx and EditUser.jsx
 
-import { Field, Section, Input, Select } from "./FormElements";
+import { Field, Section, Input, Select } from "./FormElements"
 
-export default function UserForm({user, errors, focused, onField, onFocus, onBlur}){
+export default function UserForm({ user, errors, focused, onField, onFocus, onBlur }) {
 
-    const fp = (name)=>({
-        onFocus:()=>onFocus(name),
-        onBlur:()=>onBlur(),
-        focused: focused===name,
-    })
+  const fp = (name) => ({
+    onFocus: () => onFocus(name),
+    onBlur:  () => onBlur(),
+    focused: focused === name,
+  })
 
   return (
     <Section title="User Details">
-        <Field label="Username" required error={errors.username}>
 
-        <Input name="username" value={user.username} onChange={onField} 
-        placeholder="e.g. johndoe" {...fp('username')}/>
-        </Field>
+      <Field label="Username" required error={errors.username}>
+        <Input name="username" value={user.username} onChange={onField}
+          placeholder="e.g. johndoe" {...fp('username')} />
+      </Field>
 
-        <Field label="Email" required error={errors.email}>
+      <Field label="Email" required error={errors.email}>
         <Input name="email" type="email" value={user.email} onChange={onField}
           placeholder="john@example.com" {...fp('email')} />
       </Field>
@@ -36,12 +36,12 @@ export default function UserForm({user, errors, focused, onField, onFocus, onBlu
 
       <Field label="Phone Number" required error={errors.phone_number}>
         <Input name="phone_number" value={user.phone_number} onChange={onField}
-          placeholder="9800000000" {...fp('phone_number')} />
+          placeholder="e.g. 01-6616905" {...fp('phone_number')} />
       </Field>
 
       <Field label="Mobile Number" error={errors.mobile_number}>
         <Input name="mobile_number" value={user.mobile_number} onChange={onField}
-          placeholder="+977-9800000000" {...fp('mobile_number')} />
+          placeholder="e.g. +977-9743211466" {...fp('mobile_number')} />
       </Field>
 
       <Field label="Age" error={errors.age}>
@@ -51,9 +51,9 @@ export default function UserForm({user, errors, focused, onField, onFocus, onBlu
 
       <Field label="Gender" error={errors.gender}>
         <Select name="gender" value={user.gender} onChange={onField} options={[
-          { value: 'male',   label: 'Male' },
+          { value: 'male',   label: 'Male'   },
           { value: 'female', label: 'Female' },
-          { value: 'other',  label: 'Other' },
+          { value: 'other',  label: 'Other'  },
         ]} />
       </Field>
 
@@ -61,8 +61,7 @@ export default function UserForm({user, errors, focused, onField, onFocus, onBlu
         <Input name="address" value={user.address} onChange={onField}
           placeholder="Kathmandu, Nepal" {...fp('address')} />
       </Field>
+
     </Section>
   )
 }
-
-
