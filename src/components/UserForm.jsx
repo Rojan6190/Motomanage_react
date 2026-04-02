@@ -34,15 +34,15 @@ export default function UserForm({ user, errors, focused, onField, onFocus, onBl
           placeholder="Doe" {...fp('last_name')} />
       </Field>
 
-      <Field label="Phone Number" required error={errors.phone_number}>
-        <Input name="phone_number" value={user.phone_number} onChange={onField}
-          placeholder="e.g. 01-6616905" {...fp('phone_number')} />
-      </Field>
+<Field label="Phone Number" error={errors.phone_number}>
+  <Input name="phone_number" value={user.phone_number} onChange={onField}
+    placeholder="e.g. 01-6616905" {...fp('phone_number')} />
+</Field>
 
-      <Field label="Mobile Number" error={errors.mobile_number}>
-        <Input name="mobile_number" value={user.mobile_number} onChange={onField}
-          placeholder="e.g. +977-9743211466" {...fp('mobile_number')} />
-      </Field>
+<Field label="Mobile Number" required error={errors.mobile_number}>
+  <Input name="mobile_number" value={user.mobile_number} onChange={onField}
+    placeholder="e.g. +977-9743211466" {...fp('mobile_number')} />
+</Field>
 
       <Field label="Age" error={errors.age}>
         <Input name="age" type="number" min="18" value={user.age} onChange={onField}

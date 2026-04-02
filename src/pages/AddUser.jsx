@@ -20,15 +20,17 @@ export function validateUser(user) {
   if (!user.email || !user.email.includes('@'))
     e.email = 'Valid email required.'
 
-  // Count actual digits only — matches backend logic
-  const phoneDigits = (user.phone_number || '').replace(/\D/g, '').length
-  if (!user.phone_number || phoneDigits < 7)
-    e.phone_number = 'At least 7 digits required (e.g. 01-6616905).'
+  // phone_number — optional, only validate if provided
+  if (user.phone_number) {
+    const phoneDigits = user.phone_number.replace(/\D/g, '').length
+    if (phoneDigits < 7)
+      e.phone_number = 'At least 7 digits required (e.g. 01-6616905).'
+  }
 
-  // Mobile is optional but if provided must have at least 10 digits
+  // mobile_number — required and must have at least 10 digits
   const mobileDigits = (user.mobile_number || '').replace(/\D/g, '').length
-  if (user.mobile_number && user.mobile_number !== '+977-' && mobileDigits < 10)
-    e.mobile_number = 'At least 10 digits required (e.g. +977-9743211466).'
+  if (!user.mobile_number || user.mobile_number === '+977-' || mobileDigits < 10)
+    e.mobile_number = 'Required. At least 10 digits (e.g. +977-9743211466).'
 
   if (user.age && Number(user.age) < 18)
     e.age = 'Must be 18 or above.'
